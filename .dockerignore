@@ -1,0 +1,5 @@
+web/
+.git/
+*.md
+e2e/
+db/

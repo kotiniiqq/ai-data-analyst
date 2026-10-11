@@ -19,5 +19,29 @@ services:
       timeout: 3s
       retries: 30
 
+  seed:
+    build: .
+    entrypoint: ["/usr/local/bin/seed"]
+    environment:
+      DATABASE_URL: postgres://app:${POSTGRES_PASSWORD:-app-dev-only}@db:5432/analyst
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    build: .
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      JWT_SECRET: ${JWT_SECRET:-local-demo-secret-change-me-0123456789}
+      DATABASE_URL: postgres://app:${POSTGRES_PASSWORD:-app-dev-only}@db:5432/analyst
+      WAREHOUSE_URL: postgres://analyst_ro:${WAREHOUSE_PASSWORD:-warehouse-dev-only}@db:5432/analyst
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      seed:
+        condition: service_completed_successfully
+
 volumes:
   db-data:

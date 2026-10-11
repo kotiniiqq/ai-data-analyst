@@ -111,7 +111,7 @@ func Run(ctx context.Context, p Planner, reg *tools.Registry, u rbac.User, quest
 			a.Trace = append(a.Trace, item)
 			if err == nil {
 				if out.Rows != nil {
-					a.Table, a.SQL, a.Chart = out.Rows, out.SQL, chartOf(out.Rows)
+					a.Table, a.SQL, a.Chart = out.Rows, out.SQL, ChartOf(out.Rows)
 				}
 				if out.Approval != nil {
 					a.Approval, a.SQL = out.Approval, out.Approval.SQL
@@ -150,8 +150,8 @@ func fallback(st State, lead string) string {
 
 var monthPattern = regexp.MustCompile(`^\d{4}-\d{2}$`)
 
-// chartOf draws a line chart when the first column is a month and the last is numeric.
-func chartOf(rows *warehouse.Rows) *Chart {
+// ChartOf draws a line chart when the first column is a month and the last is numeric.
+func ChartOf(rows *warehouse.Rows) *Chart {
 	if len(rows.Rows) < 2 || len(rows.Columns) < 2 || len(rows.Columns) > 3 {
 		return nil
 	}
