@@ -28,7 +28,7 @@ var errUnterminated = errors.New("unterminated string, identifier or comment")
 
 // lex splits PostgreSQL source into tokens. It follows the server's rules for
 // the parts that decide where code ends and data begins: standard strings
-// ('' escapes), E'' strings (backslash escapes), dollar quotes, quoted
+// (” escapes), E” strings (backslash escapes), dollar quotes, quoted
 // identifiers, and nested block comments.
 func lex(src string) ([]token, error) {
 	var out []token
@@ -151,7 +151,7 @@ func scanQuoted(src string, i int, q byte) (int, bool) {
 }
 
 // scanEscapeString scans E'...' from its opening quote: a backslash escapes
-// the next byte, and '' is also an escaped quote.
+// the next byte, and ” is also an escaped quote.
 func scanEscapeString(src string, i int) (int, bool) {
 	i++
 	for i < len(src) {
