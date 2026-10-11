@@ -139,6 +139,7 @@ func validate(t Tool, args map[string]any) (map[string]string, error) {
 func numbersIn(o Output) []float64 {
 	var nums []float64
 	if o.Rows != nil {
+		nums = append(nums, float64(len(o.Rows.Rows)))
 		for _, row := range o.Rows.Rows {
 			for _, v := range row {
 				switch x := v.(type) {
