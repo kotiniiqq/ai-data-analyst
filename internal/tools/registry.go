@@ -115,8 +115,14 @@ func (r *Registry) audit(ctx context.Context, u rbac.User, tool string, allowed 
 		InputKeys: keys, DurationMS: time.Since(start).Milliseconds()})
 }
 
+// MalformedArgsKey carries tool arguments a model sent as invalid JSON.
+const MalformedArgsKey = "_malformed_arguments"
+
 // validate accepts only declared parameters, all of them strings.
 func validate(t Tool, args map[string]any) (map[string]string, error) {
+	if _, ok := args[MalformedArgsKey]; ok {
+		return nil, toolErr("bad_input", "the arguments for %s were not valid JSON", t.Name)
+	}
 	out := map[string]string{}
 	for k, v := range args {
 		if !slices.ContainsFunc(t.Params, func(p Param) bool { return p.Name == k }) {

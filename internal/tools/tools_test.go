@@ -257,3 +257,11 @@ func TestDescribeToolsRespectSensitivity(t *testing.T) {
 		t.Fatalf("list_metrics: %q %v", out.Text, err)
 	}
 }
+
+func TestMalformedArgumentsAreReportedAsInvalidJSON(t *testing.T) {
+	e := newEnv(t, 1000)
+	_, err := e.reg.Execute(context.Background(), viewer, "metric_series", map[string]any{MalformedArgsKey: "{metric: mrr"})
+	if toolCode(err) != "bad_input" || !strings.Contains(err.Error(), "not valid JSON") {
+		t.Fatalf("got %v", err)
+	}
+}
