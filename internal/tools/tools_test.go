@@ -265,3 +265,15 @@ func TestMalformedArgumentsAreReportedAsInvalidJSON(t *testing.T) {
 		t.Fatalf("got %v", err)
 	}
 }
+
+func TestSummaryTextNeverUsesExponentNotation(t *testing.T) {
+	e := newEnv(t, 1000)
+	e.wh.rows = warehouse.Rows{Columns: []string{"month", "mrr"}, Rows: [][]any{{"2026-08", 1083920.26}, {"2026-09", 2500000.0}}}
+	out, err := e.reg.Execute(context.Background(), viewer, "metric_series", map[string]any{"metric": "mrr", "from": "2026-08-01", "to": "2026-09-30"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(out.Text, "e+") || !strings.Contains(out.Text, "1083920.26") || !strings.Contains(out.Text, "2500000") {
+		t.Fatalf("text %q", out.Text)
+	}
+}

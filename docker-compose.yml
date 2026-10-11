@@ -43,5 +43,12 @@ services:
       seed:
         condition: service_completed_successfully
 
+  web:
+    build: ./web
+    ports:
+      - "127.0.0.1:8088:80"
+    depends_on:
+      - api
+
 volumes:
   db-data:

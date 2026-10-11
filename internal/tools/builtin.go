@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"strconv"
 	"strings"
 	"time"
 
@@ -356,12 +357,15 @@ func (s SeriesSummary) text() string {
 		if st.Points == 0 {
 			return fmt.Sprintf("%s: no data between %s and %s", s.Metric, s.From, s.To)
 		}
-		return fmt.Sprintf("%s (%s), %d months %s..%s: first %v, last %v, change %v (%v%%), min %v, max %v, avg %v, total %v",
-			s.Metric, s.Unit, st.Points, st.FirstMonth, st.LastMonth, st.First, st.Last, st.Change, st.ChangePct, st.Min, st.Max, st.Avg, st.Total)
+		return fmt.Sprintf("%s (%s), %d months %s..%s: first %s, last %s, change %s (%s%%), min %s, max %s, avg %s, total %s",
+			s.Metric, s.Unit, st.Points, st.FirstMonth, st.LastMonth, plain(st.First), plain(st.Last), plain(st.Change), plain(st.ChangePct), plain(st.Min), plain(st.Max), plain(st.Avg), plain(st.Total))
 	}
 	var parts []string
 	for _, g := range s.Groups {
-		parts = append(parts, fmt.Sprintf("%s: first %v, last %v, change %v (%v%%), total %v", g.Key, g.First, g.Last, g.Change, g.ChangePct, g.Total))
+		parts = append(parts, fmt.Sprintf("%s: first %s, last %s, change %s (%s%%), total %s", g.Key, plain(g.First), plain(g.Last), plain(g.Change), plain(g.ChangePct), plain(g.Total)))
 	}
 	return fmt.Sprintf("%s (%s) by %s, %s..%s. %s", s.Metric, s.Unit, s.By, s.From, s.To, strings.Join(parts, "; "))
 }
+
+// plain prints a number without exponent notation.
+func plain(v float64) string { return strconv.FormatFloat(v, 'f', -1, 64) }
