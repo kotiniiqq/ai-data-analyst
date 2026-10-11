@@ -72,7 +72,9 @@ func (r *Registry) Execute(ctx context.Context, u rbac.User, name string, args m
 	if err == nil && out.Numbers == nil {
 		out.Numbers = numbersIn(out)
 	}
-	r.audit(ctx, u, name, true, err, keys, start)
+	var te *ToolError
+	denied := errors.As(err, &te) && te.Code == "forbidden" // e.g. a sensitive metric
+	r.audit(ctx, u, name, !denied, err, keys, start)
 	return out, err
 }
 

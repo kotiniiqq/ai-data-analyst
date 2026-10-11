@@ -338,7 +338,7 @@ func withUnit(v float64, unit string, sign bool) string {
 	}
 	switch unit {
 	case "USD":
-		return prefix + "$" + num(v)
+		return prefix + "$" + cents(num(v))
 	case "%":
 		return prefix + num(v) + "%"
 	case "minutes":
@@ -348,14 +348,19 @@ func withUnit(v float64, unit string, sign bool) string {
 	}
 }
 
+// cents pads money with one decimal to two: 1,234.5 -> 1,234.50.
+func cents(s string) string {
+	if i := strings.IndexByte(s, '.'); i >= 0 && len(s)-i == 2 {
+		return s + "0"
+	}
+	return s
+}
+
 // num formats with thousands separators and at most two decimals.
 func num(v float64) string {
 	v = math.Round(v*100) / 100
 	s := strconv.FormatFloat(v, 'f', -1, 64)
 	intPart, frac, _ := strings.Cut(s, ".")
-	if len(frac) == 1 {
-		frac += "0"
-	}
 	var b strings.Builder
 	for i, c := range intPart {
 		if i > 0 && (len(intPart)-i)%3 == 0 {

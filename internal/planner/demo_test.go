@@ -154,3 +154,10 @@ func TestRowCountIsAGroundedNumber(t *testing.T) {
 		t.Fatalf("%q %v", a.Text, a.Warnings)
 	}
 }
+
+func TestPercentagesKeepTheirOwnDecimals(t *testing.T) {
+	a := run(t, owner, "Gross margin in September 2026", warehouse.Rows{Columns: []string{"month", "gross_margin_pct"}, Rows: [][]any{{"2026-09", 73.6}}})
+	if a.Text != "Gross margin in Sep 2026 was 73.6%." {
+		t.Fatalf("%q", a.Text)
+	}
+}

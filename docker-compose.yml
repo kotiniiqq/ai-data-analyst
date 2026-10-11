@@ -14,7 +14,8 @@ services:
     ports:
       - "127.0.0.1:55432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U app -d analyst"]
+      # TCP, not the socket: during init the server listens on the socket only
+      test: ["CMD-SHELL", "psql -h 127.0.0.1 -U app -d analyst -tAc 'select 1 from gold.infra_daily limit 1'"]
       interval: 2s
       timeout: 3s
       retries: 30

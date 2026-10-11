@@ -277,3 +277,12 @@ func TestSummaryTextNeverUsesExponentNotation(t *testing.T) {
 		t.Fatalf("text %q", out.Text)
 	}
 }
+
+func TestForbiddenMetricIsAuditedAsDenied(t *testing.T) {
+	e := newEnv(t, 1000)
+	e.reg.Execute(context.Background(), viewer, "metric_series", map[string]any{"metric": "gross_margin_pct"})
+	got := e.log.Entries()
+	if len(got) != 1 || got[0].Allowed || got[0].Code != "forbidden" {
+		t.Fatalf("audit %+v", got)
+	}
+}
