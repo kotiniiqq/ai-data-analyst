@@ -140,3 +140,17 @@ func TestIsDistinctFromIsNotATable(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestAColumnAliasDoesNotDeclareACTE(t *testing.T) {
+	for _, q := range []string{
+		"select 1 as a, users as b from users limit 1",
+		"with x as (select 1) , users as y select * from users limit 1",
+	} {
+		if _, err := Check(q, owner, cat); code(err) != "unknown_table" {
+			t.Errorf("%q: got %v", q, err)
+		}
+	}
+	if _, err := Check("with m as materialized (select plan from gold.revenue_daily), n as not materialized (select 1) select * from m, n limit 1", analyst, cat); err != nil {
+		t.Fatalf("materialized CTEs: %v", err)
+	}
+}

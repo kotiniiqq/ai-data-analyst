@@ -158,7 +158,17 @@ func cteNames(toks []token) map[string]bool {
 		if j < len(toks) && isPunct(toks[j], "(") {
 			j = matchParen(toks, j) + 1
 		}
-		if j < len(toks) && isWord(toks[j], "as") {
+		if j >= len(toks) || !isWord(toks[j], "as") {
+			continue
+		}
+		j++
+		if j < len(toks) && isWord(toks[j], "not") {
+			j++
+		}
+		if j < len(toks) && isWord(toks[j], "materialized") {
+			j++
+		}
+		if j < len(toks) && isPunct(toks[j], "(") { // a column alias is never followed by "("
 			names[strings.ToLower(toks[i].text)] = true
 		}
 	}

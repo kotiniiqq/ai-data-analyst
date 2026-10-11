@@ -89,3 +89,11 @@ func TestLookupIsCaseInsensitive(t *testing.T) {
 		t.Fatal("unknown metric found")
 	}
 }
+
+func TestMetricExpressionsWorkInBothDialects(t *testing.T) {
+	for _, m := range Default().Metrics(owner) {
+		if strings.Contains(m.Expr, "::") {
+			t.Errorf("%s uses a Postgres-only cast: %s", m.Name, m.Expr)
+		}
+	}
+}

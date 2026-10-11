@@ -145,7 +145,7 @@ func Default() *Catalog {
 		{Name: "infra_cost", Description: "Infrastructure cost", Unit: "USD", Sensitive: true,
 			Table: "gold.infra_daily", DateCol: "date", Expr: "round(sum(cost_usd), 2)", Dims: []string{"region"}},
 		{Name: "servers", Description: "Servers running (average over the month's days)", Unit: "servers", Sensitive: true,
-			Table: "gold.infra_daily", DateCol: "date", Expr: "round(sum(servers)::numeric / count(DISTINCT date), 1)", Dims: []string{"region"}},
+			Table: "gold.infra_daily", DateCol: "date", Expr: "round(sum(servers) * 1.0 / count(DISTINCT date), 1)", Dims: []string{"region"}},
 	}
 	return &Catalog{tables: tables, metrics: metrics}
 }

@@ -102,7 +102,7 @@ called `gold` with the same tables.
 
 | | what | count |
 |---|---|---|
-| Go (`scripts/test.sh`) | SQL guard (49 tricky queries), roles and JWT, catalog, cost estimate (EXPLAIN fixtures and the real database), approvals, warehouse providers, tools and audit, agent loop, number guard, demo planner (golden questions), OpenRouter client, HTTP API, config | 95 tests, 144 with subtests |
+| Go (`scripts/test.sh`) | SQL guard (49 tricky queries), roles and JWT, catalog, cost estimate (EXPLAIN fixtures and the real database), approvals, warehouse providers, tools and audit, agent loop, number guard, demo planner (golden questions), OpenRouter client, HTTP API, config | 97 tests, 146 with subtests |
 | Web (`cd web && npm test`) | components and the chat flow | 12 |
 | End to end (`node e2e/run.mjs`) | on the running stack: viewer refused gross margin and the denial audited, no values in the audit, analyst's MRR equals a direct DB query, viewer never sees SQL, viewer cannot run SQL, a second statement is rejected and nothing is dropped, analyst cannot read the users table, a wide query waits for approval and only its owner can approve it once, owner's gross margin equals the DB | 10 checks |
 
