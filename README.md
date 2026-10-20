@@ -136,6 +136,11 @@ e2e/run.mjs             end-to-end checks
   from schema `gold`, with a 10-second statement timeout.
 - Login has no rate limit and the ports bind to 127.0.0.1. This is a local demo, not a hosted service.
 
+## Contact
+
+Feedback, ideas, job offers or custom projects (n8n, MCP, AI automation): [kotiniiqq@gmail.com](mailto:kotiniiqq@gmail.com).
+Bug reports and feature requests are welcome in [Issues](https://github.com/kotiniiqq/ai-data-analyst/issues).
+
 ## License
 
 MIT
