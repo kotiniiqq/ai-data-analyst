@@ -8,6 +8,8 @@ answer that quotes a number no tool returned.
 Go (Fiber) API, React client, Postgres or BigQuery as the warehouse. It runs on a laptop **without any
 API keys**.
 
+<img src="https://raw.githubusercontent.com/kotiniiqq/ai-data-analyst/main/docs/assets/overview.svg" width="640" alt="ai-data-analyst flow">
+
 > Reference version of the AI analyst I built into a client's analytics dashboard (Go, React,
 > BigQuery). That system is private. This repo rebuilds the idea from scratch on a synthetic
 > warehouse of "Northwind Cloud", a made-up SaaS company with three plans.
